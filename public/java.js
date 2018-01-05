@@ -5,8 +5,8 @@
         var y = canvas.height-30;
 
         var ballRadius = 10;  // 원 테두리
-        var dx = 2; // 이동량
-        var dy = -2; // 이동량
+        var dx = 3; // 이동량
+        var dy = -3; // 이동량
 
 
         function draw() {
@@ -72,7 +72,7 @@
 
         function drawPaddle() {    // 패들 추가
             ctx.beginPath();
-            ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+            ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight ,15);
             ctx.fillStyle = "Black";
             ctx.fill();
             ctx.closePath();
@@ -114,57 +114,63 @@
             bricks[c] = [];
             for(r=0; r<brickRowCount; r++) 
             {
-                        var bricks = [];
-        for(c=0; c<brickColumnCount; c++) 
-        {
-            bricks[c] = [];
-            for(r=0; r<brickRowCount; r++) 
-            {
-                bricks[c][r] = { x: 0, y: 0, status: 1 };
-            }
-        }
-            }
-        }
-        function collisionDetection() {
-                for(c=0; c<brickColumnCount; c++) {
-                    for(r=0; r<brickRowCount; r++) {
-                        var b = bricks[c][r];
-                        if(b.status == 1) {
-                            if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
-                                dy = -dy;
-                                b.status = 0;
-                                score++;
-                                if(score == brickRowCount*brickColumnCount) {
-                        alert("게임 클리어");
-                        document.location.reload();
+                var bricks = [];
+                for(c=0; c<brickColumnCount; c++) 
+                {
+                    bricks[c] = [];
+                    for(r=0; r<brickRowCount; r++) 
+                    {
+                        bricks[c][r] = { x: 0, y: 0, status: 1 };
                     }
+                }
+            }
+        }
+
+        function collisionDetection() {             // 충돌 함수
+            for(c=0; c<brickColumnCount; c++) {
+                for(r=0; r<brickRowCount; r++) {
+                    var b = bricks[c][r];
+                    if(b.status == 1) 
+                    {
+                        if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) 
+                        {
+                            dy = -dy;
+                            b.status = 0;
+                            score++;
+                            if(score == brickRowCount*brickColumnCount) 
+                            {
+                                alert("게임 클리어");
+                                document.location.reload();
                             }
-                        }
                         }
                     }
                 }
-            
-        function drawBricks() {
-    for(c=0; c<brickColumnCount; c++) {
-        for(r=0; r<brickRowCount; r++) {
-            if(bricks[c][r].status == 1) {
-                var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-                var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
-                bricks[c][r].x = brickX;
-                bricks[c][r].y = brickY;
-                ctx.beginPath();
-                ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "White";
-                ctx.fill();
-                ctx.closePath();
             }
         }
-    }
-}
-var score = 0;
-function drawScore() {
-    ctx.font = "26px Arial";
-    ctx.fillStyle = "gray";
-    ctx.fillText("Score: "+score, (canvas.width-paddleWidth)/2, (canvas.height-paddleHeight)/2);
-}
+            
+        function drawBricks() {
+            for(c=0; c<brickColumnCount; c++) {
+                for(r=0; r<brickRowCount; r++) {
+                    if(bricks[c][r].status == 1) {
+                        var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+                        var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+                        bricks[c][r].x = brickX;
+                        bricks[c][r].y = brickY;
+                        ctx.beginPath();
+                        ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                        ctx.fillStyle = "White";
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+
+        var score = 0;
+        function drawScore() {
+            ctx.font = "26px Arial";
+            ctx.fillStyle = "gray";
+            ctx.fillText("Score: "+score, (canvas.width-paddleWidth)/2, (canvas.height-paddleHeight)/2);
+        }
+
         setInterval(draw, 10);  // setInterval 반복 함수
